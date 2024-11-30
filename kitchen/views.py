@@ -6,8 +6,8 @@ from django.views.generic import (
     DetailView,
     DeleteView,
 )
-from .models import Dish
-from .forms import DishForm
+from .models import Dish, DishType, Cook
+from .forms import DishForm, DishTypeForm, CookForm
 
 
 class DishCreateView(CreateView):
@@ -39,4 +39,16 @@ class DishUpdateView(UpdateView):
 class DishDeleteView(DeleteView):
     model = Dish
     template_name = "dish_confirm_delete.html"
+    success_url = reverse_lazy("dish_list")
+
+class DishTypeCreateView(CreateView):
+    model = DishType
+    form_class = DishTypeForm
+    template_name = "dish_type_create.html"
+    success_url = reverse_lazy("dish_list")
+
+class CookerCreateView(CreateView):
+    model = Cook
+    form_class = CookForm
+    template_name = "cook_create.html"
     success_url = reverse_lazy("dish_list")
