@@ -9,9 +9,16 @@ class DishTypeForm(forms.ModelForm):
 
 
 class DishForm(forms.ModelForm):
+    cooks = forms.ModelMultipleChoiceField(
+        queryset=Cook.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True
+    )
+
     class Meta:
         model = Dish
         fields = ["name", "description", "price", "dish_type", "cooks"]
+
 
 
 class CookForm(forms.ModelForm):

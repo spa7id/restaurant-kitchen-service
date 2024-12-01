@@ -15,6 +15,12 @@
     {% empty %}
         <li>Немає відповідальних кухарів</li>
     {% endfor %}
+<h3>Кухарі, які готують:</h3>
+<ul>
+    {% for cook in dish.cooks.all %}
+        <li>{{ cook.first_name }} {{ cook.last_name }}</li>
+    {% endfor %}
+</ul>
 </ul>
 
 {% endblock %}

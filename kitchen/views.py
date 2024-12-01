@@ -22,7 +22,7 @@ class DishCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("dish_list")
 
 
-class DishListView(ListView):
+class DishListView(LoginRequiredMixin, ListView):
     model = Dish
     template_name = "dish_list.html"
     context_object_name = "dishes"
@@ -83,3 +83,9 @@ class DishTypeCreateView(CreateView):
 
     def form_valid(self, form):
         return super().form_valid(form)
+
+class DishTypeUpdateView(LoginRequiredMixin, UpdateView):
+    model = DishType
+    form_class = DishTypeForm
+    template_name = "dish_type_update.html"
+    success_url = reverse_lazy("dish_list")

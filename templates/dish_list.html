@@ -1,19 +1,28 @@
 {% extends 'base.html' %}
 
-{% block title %}Dish List{% endblock %}
+{% block title %}Список страв{% endblock %}
 
 {% block content %}
-<h2>Список страв</h2>
-<ul>
-    {% for dish in dishes %}
-        <li>
-            <a href="{% url 'dish_detail' dish.pk %}">{{ dish.name }}</a>
-            <br>
-            Тип страви: {{ dish.dish_type.name }}
-        </li>
-    {% empty %}
-        <p>Немає страв у списку</p>
-    {% endfor %}
-</ul>
-
+<div class="container mt-5">
+    <h2 class="mb-4">Список страв</h2>
+    <div class="row">
+        {% for dish in dishes %}
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ dish.name }}</h5>
+                        <p class="card-text">Тип страви: {{ dish.dish_type.name }}</p>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'dish_detail' dish.pk %}" class="btn btn-info btn-sm">Деталі</a>
+                            <a href="{% url 'dish_update' dish.pk %}" class="btn btn-primary btn-sm">Редагувати</a>
+                            <a href="{% url 'dish_delete' dish.pk %}" class="btn btn-danger btn-sm">Видалити</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted">Немає страв у списку.</p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
