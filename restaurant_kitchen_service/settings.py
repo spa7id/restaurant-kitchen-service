@@ -128,3 +128,8 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "kitchen.Cook"
+
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/dish/'
+LOGOUT_REDIRECT_URL = '/'

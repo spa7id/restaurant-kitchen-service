@@ -3,12 +3,17 @@
 {% block title %}Dish List{% endblock %}
 
 {% block content %}
-  <h2>Dish List</h2>
-  <ul class="list-group">
+<h2>Список страв</h2>
+<ul>
     {% for dish in dishes %}
-      <li class="list-group-item">
-        <a href="{% url 'dish_detail' dish.id %}">{{ dish.name }}</a>
-      </li>
+        <li>
+            <a href="{% url 'dish_detail' dish.pk %}">{{ dish.name }}</a>
+            <br>
+            Тип страви: {{ dish.dish_type.name }}
+        </li>
+    {% empty %}
+        <p>Немає страв у списку</p>
     {% endfor %}
-  </ul>
+</ul>
+
 {% endblock %}

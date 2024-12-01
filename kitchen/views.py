@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.crypto import get_random_string
@@ -14,7 +15,7 @@ from django.contrib.auth.hashers import make_password
 
 
 
-class DishCreateView(CreateView):
+class DishCreateView(LoginRequiredMixin, CreateView):
     model = Dish
     form_class = DishForm
     template_name = "dish_create.html"
