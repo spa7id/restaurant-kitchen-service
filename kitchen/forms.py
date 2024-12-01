@@ -15,6 +15,14 @@ class DishForm(forms.ModelForm):
 
 
 class CookForm(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput,
+        label="Пароль",
+        required=True,
+        help_text="Пароль має бути не менше 8 символів"
+    )
+
     class Meta:
         model = Cook
-        fields = ["first_name", "last_name", "email", "years_of_experience"]
+        fields = ["first_name", "last_name", "email", "years_of_experience",
+                  "password"]
