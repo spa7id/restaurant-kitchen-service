@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -65,15 +66,17 @@ class CookerCreateView(CreateView):
         return super().form_valid(form)
 
 def home(request):
-    num_dish_types = Dish.objects.values("dish_type").distinct().count()
+    num_dish_types = DishType.objects.count()
     num_cooks = Cook.objects.count()
     num_dishes = Dish.objects.count()
+
 
     return render(request, 'index.html', {
         'num_dish_types': num_dish_types,
         'num_cooks': num_cooks,
         'num_dishes': num_dishes,
     })
+
 
 class DishTypeCreateView(CreateView):
     model = DishType
@@ -89,3 +92,8 @@ class DishTypeUpdateView(LoginRequiredMixin, UpdateView):
     form_class = DishTypeForm
     template_name = "dish_type_update.html"
     success_url = reverse_lazy("dish_list")
+
+class RegisterView(CreateView):
+    form_class = UserCreationForm
+    template_name = "register.html"
+    success_url = reverse_lazy("login")

@@ -13,24 +13,40 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
             <div class="container">
-                <a class="navbar-brand fw-bold" href="#">🍴 Restaurant Kitchen</a>
+                <a class="navbar-brand fw-bold" href="{% url 'home' %}">🍴 Restaurant Kitchen</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'dish_create' %}">Create Dish</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'create_dish_type' %}">Create Dish Type</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'create_cook' %}">Create Cook</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'dish_list' %}">Dish List</a>
-                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dish_list' %}">Список страв</a>
+                            </li>
+                            {% if perms.kitchen.can_add_dish %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'dish_create' %}">Додати страву</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'create_dish_type' %}">Додати тип страви</a>
+                                </li>
+                            {% endif %}
+                            {% if user.is_superuser %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'create_cook' %}">Додати кухаря</a>
+                                </li>
+                            {% endif %}
+                            <li class="nav-item">
+                                <a class="nav-link text-danger" href="{% url 'logout' %}">Вийти</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}">Увійти</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'register' %}">Реєстрація</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

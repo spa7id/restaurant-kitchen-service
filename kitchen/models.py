@@ -25,5 +25,11 @@ class Dish(models.Model):
     )
     cooks = models.ManyToManyField(Cook, related_name='dishes')
 
+
+    class Meta:
+        permissions = [
+            ("can_add_dish", "Can add new dish"),
+        ]
+
     def __str__(self):
         return self.name
