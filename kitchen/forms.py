@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 
-from .models import Dish, DishType, Cook
+from .models import Dish, DishType, Cook, Order
 
 
 class DishTypeForm(forms.ModelForm):
@@ -79,3 +79,13 @@ class CookCreationForm(forms.ModelForm):
             user.set_password(self.cleaned_data["password"])
             user.save()
         return user
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['address', 'comment']
+        widgets = {
+            'address': forms.Textarea(attrs={'rows': 3}),
+            'comment': forms.Textarea(attrs={'rows': 2}),
+        }

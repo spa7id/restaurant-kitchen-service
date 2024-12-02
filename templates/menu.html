@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Меню{% endblock %}
+
+{% block content %}
+<h2>Меню</h2>
+<div class="menu">
+    {% for dish in dishes %}
+        <div>
+            <h3>{{ dish.name }}</h3>
+            <p>{{ dish.description }}</p>
+            <p>{{ dish.price }} грн</p>
+            <a href="{% url 'add_to_cart' dish.id %}" class="btn btn-primary">Додати в кошик</a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

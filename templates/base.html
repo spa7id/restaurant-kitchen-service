@@ -21,6 +21,15 @@
                     <ul class="navbar-nav ms-auto">
                         {% if user.is_authenticated %}
                             <li class="nav-item">
+                                <a class="nav-link" href="{% url 'menu' %}">Меню</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'cart' %}">Кошик</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'order_history' %}">Історія замовлень</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{% url 'dish_list' %}">Список страв</a>
                             </li>
                             {% if perms.kitchen.can_add_dish %}
@@ -56,7 +65,24 @@
     <!-- Основний вміст сторінки -->
     <main class="container my-5">
         {% block content %}
-        <!-- Вміст сторінки буде тут -->
+        <!-- Список страв -->
+        <div class="row">
+            {% for dish in dishes %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ dish.name }}</h5>
+                        <p class="card-text">{{ dish.description }}</p>
+                        <p class="text-muted">Ціна: {{ dish.price }} грн</p>
+                        <p class="text-muted">Тип: {{ dish.dish_type.name }}</p>
+                        <a href="{% url 'add_to_cart' dish.id %}" class="btn btn-primary">Додати до кошика</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>Список страв порожній.</p>
+            {% endfor %}
+        </div>
         {% endblock %}
     </main>
 
