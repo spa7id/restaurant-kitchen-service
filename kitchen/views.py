@@ -1,6 +1,7 @@
+from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.crypto import get_random_string
 from django.views.generic import (
@@ -11,7 +12,7 @@ from django.views.generic import (
     DeleteView,
 )
 from .models import Dish, DishType, Cook
-from .forms import DishForm, DishTypeForm, CookForm
+from .forms import DishForm, DishTypeForm, CookForm, CookCreationForm
 from django.contrib.auth.hashers import make_password
 
 
@@ -94,6 +95,15 @@ class DishTypeUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("dish_list")
 
 class RegisterView(CreateView):
-    form_class = UserCreationForm
+    form_class = CookForm
     template_name = "register.html"
     success_url = reverse_lazy("login")
+
+    def form_valid(self, form):
+        user = form.save()
+        messages.success(self.request, "Account created successfully. Please log in.")
+        return redirect(self.success_url)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Registration failed. Please fix the errors below.")
+        return self.render_to_response(self.get_context_data(form=form))
