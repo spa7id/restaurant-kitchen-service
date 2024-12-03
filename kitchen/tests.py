@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
+from .forms import DishTypeForm, DishForm, CookForm, CookCreationForm, OrderForm
 from .models import Dish, DishType, Cook, Order, OrderItem
 
 class DishViewTests(TestCase):
@@ -89,3 +90,184 @@ class OrderHistoryTests(TestCase):
         response = self.client.get(reverse('order_history'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.order.address)
+
+
+###########
+
+class DishTypeFormTests(TestCase):
+
+    def test_valid_form(self):
+        form_data = {'name': 'Dessert'}
+        form = DishTypeForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_form_empty_name(self):
+        form_data = {'name': ''}
+        form = DishTypeForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('name', form.errors)
+
+    def test_save_form(self):
+        form_data = {'name': 'Appetizer'}
+        form = DishTypeForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        dish_type = form.save()
+        self.assertEqual(dish_type.name, 'Appetizer')
+
+
+class DishFormTests(TestCase):
+
+    def setUp(self):
+        self.dish_type = DishType.objects.create(name="Main Course")
+        self.cook = Cook.objects.create_user(username='testcook', password='password123')
+
+    def test_valid_form(self):
+        form_data = {
+            'name': 'Pizza',
+            'description': 'Delicious pizza',
+            'price': 15.0,
+            'dish_type': self.dish_type.id,
+            'cooks': [self.cook.id],
+        }
+        form = DishForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_form_empty_name(self):
+        form_data = {
+            'name': '',
+            'description': 'Delicious pizza',
+            'price': 15.0,
+            'dish_type': self.dish_type.id,
+            'cooks': [self.cook.id],
+        }
+        form = DishForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('name', form.errors)
+
+    def test_save_form(self):
+        form_data = {
+            'name': 'Pasta',
+            'description': 'Italian pasta',
+            'price': 12.5,
+            'dish_type': self.dish_type.id,
+            'cooks': [self.cook.id],
+        }
+        form = DishForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        dish = form.save()
+        self.assertEqual(dish.name, 'Pasta')
+        self.assertEqual(dish.price, 12.5)
+        self.assertEqual(dish.dish_type, self.dish_type)
+        self.assertIn(self.cook, dish.cooks.all())
+
+
+class CookFormTests(TestCase):
+
+    def test_valid_form(self):
+        form_data = {
+            'username': 'testcook',
+            'first_name': 'Test',
+            'last_name': 'Cook',
+            'email': 'testcook@example.com',
+            'years_of_experience': 5,
+            'password': 'password123',
+        }
+        form = CookForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_form_existing_username(self):
+        Cook.objects.create_user(username='testcook', password='password123')
+        form_data = {
+            'username': 'testcook',  # Same as an existing user
+            'first_name': 'Test',
+            'last_name': 'Cook',
+            'email': 'testcook2@example.com',
+            'years_of_experience': 5,
+            'password': 'password123',
+        }
+        form = CookForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('username', form.errors)
+
+    def test_invalid_form_short_password(self):
+        form_data = {
+            'username': 'newcook',
+            'first_name': 'New',
+            'last_name': 'Cook',
+            'email': 'newcook@example.com',
+            'years_of_experience': 3,
+            'password': 'short',
+        }
+        form = CookForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('password', form.errors)
+
+    def test_save_form(self):
+        form_data = {
+            'username': 'cook123',
+            'first_name': 'Cook',
+            'last_name': 'Test',
+            'email': 'cook123@example.com',
+            'years_of_experience': 3,
+            'password': 'password123',
+        }
+        form = CookForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        cook = form.save()
+        self.assertEqual(cook.username, 'cook123')
+        self.assertTrue(cook.check_password('password123'))
+
+
+class CookCreationFormTests(TestCase):
+
+    def test_valid_form(self):
+        form_data = {
+            'first_name': 'Cook',
+            'last_name': 'Test',
+            'email': 'cooktest@example.com',
+            'years_of_experience': 3,
+            'password': 'password123',
+        }
+        form = CookCreationForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_save_form(self):
+        form_data = {
+            'first_name': 'Cook',
+            'last_name': 'Test',
+            'email': 'cooktest@example.com',
+            'years_of_experience': 3,
+            'password': 'password123',
+        }
+        form = CookCreationForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        cook = form.save()
+        self.assertEqual(cook.first_name, 'Cook')
+        self.assertTrue(cook.check_password('password123'))
+
+
+class OrderFormTests(TestCase):
+
+    def setUp(self):
+        self.user = Cook.objects.create_user(username='testuser', password='password123')
+
+    def test_valid_form(self):
+        form_data = {'address': '123 Street', 'comment': 'Test order'}
+        form = OrderForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_form_empty_address(self):
+        form_data = {'address': '', 'comment': 'Test order'}
+        form = OrderForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('address', form.errors)
+
+    def test_save_form(self):
+        form_data = {'address': '123 Street', 'comment': 'Test order'}
+        form = OrderForm(data=form_data)
+        self.assertTrue(form.is_valid())
+        order = form.save(commit=False)
+        order.user = self.user
+        order.save()
+        self.assertEqual(order.address, '123 Street')
+        self.assertEqual(order.comment, 'Test order')
