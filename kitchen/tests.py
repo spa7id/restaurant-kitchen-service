@@ -178,7 +178,7 @@ class CookFormTests(TestCase):
     def test_invalid_form_existing_username(self):
         Cook.objects.create_user(username='testcook', password='password123')
         form_data = {
-            'username': 'testcook',  # Same as an existing user
+            'username': 'testcook',
             'first_name': 'Test',
             'last_name': 'Cook',
             'email': 'testcook2@example.com',
