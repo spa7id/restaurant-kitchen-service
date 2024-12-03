@@ -39,12 +39,15 @@ class CookForm(forms.ModelForm):
 
     class Meta:
         model = Cook
-        fields = ["username", "first_name", "last_name", "email", "years_of_experience", "password"]
+        fields = ["username", "first_name", "last_name", "email",
+                  "years_of_experience", "password"]
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
         if Cook.objects.filter(username=username).exists():
-            raise ValidationError("Цей username вже зайнятий. Будь ласка, виберіть інший.")
+            raise ValidationError(
+                "Цей username вже зайнятий. Будь ласка, виберіть інший."
+            )
         return username
 
     def clean_password(self):
@@ -52,6 +55,7 @@ class CookForm(forms.ModelForm):
         if len(password) < 8:
             raise ValidationError("Пароль має бути не менше 8 символів.")
         return password
+
 
     def save(self, commit=True):
         instance = super().save(commit=False)

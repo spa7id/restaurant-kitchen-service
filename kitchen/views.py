@@ -67,11 +67,11 @@ class CookerCreateView(CreateView):
         form.instance.password = make_password(form.cleaned_data["password"])
         return super().form_valid(form)
 
+
 def home(request):
     num_dish_types = DishType.objects.count()
     num_cooks = Cook.objects.count()
     num_dishes = Dish.objects.count()
-
 
     return render(request, 'index.html', {
         'num_dish_types': num_dish_types,
@@ -89,11 +89,13 @@ class DishTypeCreateView(CreateView):
     def form_valid(self, form):
         return super().form_valid(form)
 
+
 class DishTypeUpdateView(LoginRequiredMixin, UpdateView):
     model = DishType
     form_class = DishTypeForm
     template_name = "dish_type_update.html"
     success_url = reverse_lazy("dish_list")
+
 
 class RegisterView(CreateView):
     form_class = CookForm
@@ -102,16 +104,20 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        messages.success(self.request, "Account created successfully. Please log in.")
+        messages.success(self.request,
+                         "Account created successfully. Please log in.")
         return redirect(self.success_url)
 
     def form_invalid(self, form):
-        messages.error(self.request, "Registration failed. Please fix the errors below.")
+        messages.error(self.request,
+                       "Registration failed. Please fix the errors below.")
         return self.render_to_response(self.get_context_data(form=form))
+
 
 def menu_view(request):
     dishes = Dish.objects.all()
     return render(request, 'menu.html', {'dishes': dishes})
+
 
 def add_to_cart(request, dish_id):
     dish = get_object_or_404(Dish, id=dish_id)
@@ -123,15 +129,19 @@ def add_to_cart(request, dish_id):
     request.session['cart'] = cart
     return redirect('menu')
 
+
 def view_cart(request):
     cart = request.session.get('cart', {})
     cart_items = []
     total_price = 0
     for dish_id, quantity in cart.items():
         dish = get_object_or_404(Dish, id=dish_id)
-        cart_items.append({'dish': dish, 'quantity': quantity, 'total_price': dish.price * quantity})
+        cart_items.append({'dish': dish, 'quantity': quantity,
+                           'total_price': dish.price * quantity})
         total_price += dish.price * quantity
-    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
+    return render(request, 'cart.html', {'cart_items': cart_items,
+                                         'total_price': total_price})
+
 
 def checkout(request):
     cart = request.session.get('cart', {})
@@ -146,13 +156,16 @@ def checkout(request):
             order.save()
             for dish_id, quantity in cart.items():
                 dish = get_object_or_404(Dish, id=dish_id)
-                OrderItem.objects.create(order=order, dish=dish, quantity=quantity)
+                OrderItem.objects.create(
+                    order=order, dish=dish, quantity=quantity
+                )
             request.session['cart'] = {}
             return redirect('order_history')
     else:
         form = OrderForm()
 
     return render(request, 'checkout.html', {'form': form})
+
 
 def order_history(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at')

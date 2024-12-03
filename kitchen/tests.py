@@ -59,9 +59,11 @@ class MenuCartTests(TestCase):
 class CheckoutTests(TestCase):
 
     def setUp(self):
-        self.user = Cook.objects.create_user(username='testuser', password='testpass')
+        self.user = Cook.objects.create_user(username='testuser',
+                                             password='testpass')
         self.dish_type = DishType.objects.create(name="Main Course")
-        self.dish = Dish.objects.create(name="Pasta", price=10.5, dish_type=self.dish_type)
+        self.dish = Dish.objects.create(name="Pasta", price=10.5,
+                                        dish_type=self.dish_type)
         self.client.login(username='testuser', password='testpass')
 
     def test_checkout_empty_cart(self):
