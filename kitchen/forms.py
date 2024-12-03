@@ -89,3 +89,4 @@ class OrderForm(forms.ModelForm):
             'address': forms.Textarea(attrs={'rows': 3}),
             'comment': forms.Textarea(attrs={'rows': 2}),
         }
+
