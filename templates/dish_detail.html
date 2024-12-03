@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Dish Detail{% endblock %}
+
+{% block content %}
+<h2>{{ dish.name }}</h2>
+<p>{{ dish.description }}</p>
+<p>Ціна: {{ dish.price }} грн</p>
+<p>Тип страви: {{ dish.dish_type.name }}</p>
+
+<h3>Кухарі, відповідальні за страву:</h3>
+<ul>
+    {% for cook in dish.cooks.all %}
+        <li>{{ cook.first_name }} {{ cook.last_name }}</li>
+    {% empty %}
+        <li>Немає відповідальних кухарів</li>
+    {% endfor %}
+<h3>Кухарі, які готують:</h3>
+<ul>
+    {% for cook in dish.cooks.all %}
+        <li>{{ cook.first_name }} {{ cook.last_name }}</li>
+    {% endfor %}
+</ul>
+</ul>
+
+{% endblock %}

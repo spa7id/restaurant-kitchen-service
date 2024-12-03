@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Видалення типу страви{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Видалити тип страви?</h2>
+    <p>Ви впевнені, що хочете видалити {{ object.name }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Так, видалити</button>
+        <a href="{% url 'dish_list' %}" class="btn btn-secondary">Назад</a>
+    </form>
+</div>
+{% endblock %}
