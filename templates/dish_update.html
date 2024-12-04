@@ -1,12 +1,27 @@
-{% extends 'base.html' %}
+{% extends "layouts/base.html" %}
 
 {% block title %}Edit Dish{% endblock %}
 
 {% block content %}
-  <h2>Edit Dish</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-  </form>
+  {% include 'includes/navigation-custom.html' %}
+
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Edit Dish</h2>
+
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+
+          <div class="form-group mb-3">
+            {{ form.as_p }}
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
 {% endblock %}
+
+#qq

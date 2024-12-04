@@ -1,26 +1,34 @@
-{% extends 'base.html' %}
+{% extends "layouts/base.html" %}
 
 {% block title %}Dish Detail{% endblock %}
 
 {% block content %}
-<h2>{{ dish.name }}</h2>
-<p>{{ dish.description }}</p>
-<p>Ціна: {{ dish.price }} грн</p>
-<p>Тип страви: {{ dish.dish_type.name }}</p>
+  {% include 'includes/navigation-custom.html' %}
 
-<h3>Кухарі, відповідальні за страву:</h3>
-<ul>
-    {% for cook in dish.cooks.all %}
-        <li>{{ cook.first_name }} {{ cook.last_name }}</li>
-    {% empty %}
-        <li>Немає відповідальних кухарів</li>
-    {% endfor %}
-<h3>Кухарі, які готують:</h3>
-<ul>
-    {% for cook in dish.cooks.all %}
-        <li>{{ cook.first_name }} {{ cook.last_name }}</li>
-    {% endfor %}
-</ul>
-</ul>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow-sm">
+          <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">{{ dish.name }}</h2>
+          </div>
+          <div class="card-body">
+            <p class="mb-3 text-muted">{{ dish.description }}</p>
+            <p><strong>Ціна:</strong> {{ dish.price }} грн</p>
+            <p><strong>Тип страви:</strong> {{ dish.dish_type.name }}</p>
+
+            <h3 class="mt-4">Кухарі, відповідальні за страву:</h3>
+            <ul class="list-group">
+              {% for cook in dish.cooks.all %}
+                <li class="list-group-item">{{ cook.first_name }} {{ cook.last_name }}</li>
+              {% empty %}
+                <li class="list-group-item text-muted">Немає відповідальних кухарів</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}
