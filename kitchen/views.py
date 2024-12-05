@@ -1,7 +1,6 @@
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.crypto import get_random_string
@@ -13,10 +12,8 @@ from django.views.generic import (
     DeleteView,
 )
 from .models import Dish, DishType, Cook, Order, OrderItem
-from .forms import DishForm, DishTypeForm, CookForm, CookCreationForm, \
-    OrderForm
+from .forms import DishForm, DishTypeForm, CookForm, OrderForm
 from django.contrib.auth.hashers import make_password
-
 
 
 class DishCreateView(LoginRequiredMixin, CreateView):
@@ -50,11 +47,13 @@ class DishDeleteView(DeleteView):
     template_name = "dish_confirm_delete.html"
     success_url = reverse_lazy("dish_list")
 
+
 class DishTypeCreateView(CreateView):
     model = DishType
     form_class = DishTypeForm
     template_name = "dish_type_create.html"
     success_url = reverse_lazy("dish_list")
+
 
 class CookerCreateView(CreateView):
     model = Cook
@@ -134,7 +133,9 @@ def add_to_cart(request, dish_id):
 
     # Якщо запит AJAX, повертаємо JSON
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return JsonResponse({'message': 'Страва додана в кошик!', 'dish_id': dish.id})
+        return JsonResponse(
+            {'message': 'Страва додана в кошик!', 'dish_id': dish.id}
+        )
 
     # Якщо не AJAX-запит, редиректимо на меню
     return redirect('menu')
@@ -152,6 +153,7 @@ def view_cart(request):
     return render(request, 'cart.html', {'cart_items': cart_items,
                                          'total_price': total_price})
 
+
 def remove_from_cart(request, dish_id):
     cart = request.session.get('cart', {})
 
@@ -160,6 +162,7 @@ def remove_from_cart(request, dish_id):
         request.session['cart'] = cart
 
     return redirect('cart')
+
 
 def checkout(request):
     cart = request.session.get('cart', {})

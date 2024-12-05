@@ -1,14 +1,20 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from .forms import DishTypeForm, DishForm, CookForm, CookCreationForm, OrderForm
-from .models import Dish, DishType, Cook, Order, OrderItem
+from .forms import (DishTypeForm, DishForm, CookForm, CookCreationForm,
+                    OrderForm)
+from .models import Dish, DishType, Cook, Order
+
 
 class DishViewTests(TestCase):
 
     def setUp(self):
-        self.user = Cook.objects.create_user(username='testuser', password='testpass')
+        self.user = Cook.objects.create_user(
+            username='testuser', password='testpass'
+        )
         self.dish_type = DishType.objects.create(name="Main Course")
-        self.dish = Dish.objects.create(name="Pasta", price=10.5, dish_type=self.dish_type)
+        self.dish = Dish.objects.create(
+            name="Pasta", price=10.5, dish_type=self.dish_type
+        )
 
     def test_dish_list_view(self):
         self.client.login(username='testuser', password='testpass')
@@ -23,7 +29,9 @@ class DishViewTests(TestCase):
 
     def test_dish_delete_view(self):
         self.client.login(username='testuser', password='testpass')
-        response = self.client.post(reverse('dish_delete', args=[self.dish.id]))
+        response = self.client.post(
+            reverse('dish_delete', args=[self.dish.id])
+        )
         self.assertEqual(response.status_code, 302)
         self.assertFalse(Dish.objects.filter(id=self.dish.id).exists())
 
@@ -33,7 +41,9 @@ class MenuCartTests(TestCase):
     def setUp(self):
         self.client = Client()
         self.dish_type = DishType.objects.create(name="Main Course")
-        self.dish = Dish.objects.create(name="Pasta", price=10.5, dish_type=self.dish_type)
+        self.dish = Dish.objects.create(
+            name="Pasta", price=10.5, dish_type=self.dish_type
+        )
 
     def test_menu_view(self):
         response = self.client.get(reverse('menu'))
@@ -84,8 +94,12 @@ class CheckoutTests(TestCase):
 class OrderHistoryTests(TestCase):
 
     def setUp(self):
-        self.user = Cook.objects.create_user(username='testuser', password='testpass')
-        self.order = Order.objects.create(user=self.user, address='123 Street',)
+        self.user = Cook.objects.create_user(
+            username='testuser', password='testpass'
+        )
+        self.order = Order.objects.create(
+            user=self.user, address='123 Street',
+        )
 
     def test_order_history_view(self):
         self.client.login(username='testuser', password='testpass')
@@ -121,7 +135,9 @@ class DishFormTests(TestCase):
 
     def setUp(self):
         self.dish_type = DishType.objects.create(name="Main Course")
-        self.cook = Cook.objects.create_user(username='testcook', password='password123')
+        self.cook = Cook.objects.create_user(
+            username='testcook', password='password123'
+        )
 
     def test_valid_form(self):
         form_data = {
@@ -251,7 +267,9 @@ class CookCreationFormTests(TestCase):
 class OrderFormTests(TestCase):
 
     def setUp(self):
-        self.user = Cook.objects.create_user(username='testuser', password='password123')
+        self.user = Cook.objects.create_user(
+            username='testuser', password='password123'
+        )
 
     def test_valid_form(self):
         form_data = {'address': '123 Street', 'comment': 'Test order'}

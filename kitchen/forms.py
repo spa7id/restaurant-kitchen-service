@@ -56,10 +56,9 @@ class CookForm(forms.ModelForm):
             raise ValidationError("Пароль має бути не менше 8 символів.")
         return password
 
-
     def save(self, commit=True):
         instance = super().save(commit=False)
-        instance.password = make_password(self.cleaned_data["password"])  # Хешування пароля
+        instance.password = make_password(self.cleaned_data["password"])
         if commit:
             instance.save()
         return instance
@@ -75,7 +74,8 @@ class CookCreationForm(forms.ModelForm):
 
     class Meta:
         model = Cook
-        fields = ["first_name", "last_name", "email", "years_of_experience", "password"]
+        fields = ["first_name", "last_name", "email", "years_of_experience",
+                  "password"]
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -93,4 +93,3 @@ class OrderForm(forms.ModelForm):
             'address': forms.Textarea(attrs={'rows': 3}),
             'comment': forms.Textarea(attrs={'rows': 2}),
         }
-
