@@ -1,19 +1,15 @@
 from django.contrib import messages
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.crypto import get_random_string
-from django.views.generic import (
-    CreateView,
-    UpdateView,
-    ListView,
-    DetailView,
-    DeleteView,
-)
-from .models import Dish, DishType, Cook, Order, OrderItem
-from .forms import DishForm, DishTypeForm, CookForm, OrderForm
-from django.contrib.auth.hashers import make_password
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
+
+from .forms import CookForm, DishForm, DishTypeForm, OrderForm
+from .models import Cook, Dish, DishType, Order, OrderItem
 
 
 class DishCreateView(LoginRequiredMixin, CreateView):

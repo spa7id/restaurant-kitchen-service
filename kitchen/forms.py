@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 
-from .models import Dish, DishType, Cook, Order
+from .models import Cook, Dish, DishType, Order
 
 
 class DishTypeForm(forms.ModelForm):

@@ -1,8 +1,9 @@
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.urls import reverse
-from .forms import (DishTypeForm, DishForm, CookForm, CookCreationForm,
+
+from .forms import (CookCreationForm, CookForm, DishForm, DishTypeForm,
                     OrderForm)
-from .models import Dish, DishType, Cook, Order
+from .models import Cook, Dish, DishType, Order
 
 
 class DishViewTests(TestCase):

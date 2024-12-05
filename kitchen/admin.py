@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Dish, DishType, Cook
-from .forms import DishForm, DishTypeForm, CookForm
+
+from .forms import CookForm, DishForm, DishTypeForm
+from .models import Cook, Dish, DishType
 
 
 class DishAdmin(admin.ModelAdmin):
