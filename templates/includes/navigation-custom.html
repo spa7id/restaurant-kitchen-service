@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
     <div class="container">
       <a class="navbar-brand" href="">
-        <img src="{{ ASSETS_ROOT }}/img/logo-ct-dark.png" alt="Logo" height="30">
-        Kitchen 🍴
+        <img src="{{ ASSETS_ROOT }}/img/logo.com.png" alt="Logo" height="80">
+        Kitchen Service
       </a>
 
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -28,7 +28,11 @@
           <li class="nav-item">
             <a class="btn btn-outline-primary" href="{% url 'create_cook' %}">Додати кухаря</a>
           </li>
-
+          <br>
+          <li class="nav-item">
+            <a class="btn btn-outline-primary" href="{% url 'logout' %}">Вийти</a>
+          </li>
+          </br>
         </ul>
       </div>
     </div>
