@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.crypto import get_random_string
@@ -84,7 +85,7 @@ class DishTypeCreateView(CreateView):
     model = DishType
     form_class = DishTypeForm
     template_name = 'dish_type_create.html'
-    success_url = '/'  # або інший URL після успішного створення
+    success_url = reverse_lazy('dish_list')
 
     def form_valid(self, form):
         return super().form_valid(form)
@@ -122,11 +123,20 @@ def menu_view(request):
 def add_to_cart(request, dish_id):
     dish = get_object_or_404(Dish, id=dish_id)
     cart = request.session.get('cart', {})
+
+    # Додаємо страву до кошика
     if str(dish.id) in cart:
         cart[str(dish.id)] += 1
     else:
         cart[str(dish.id)] = 1
+
     request.session['cart'] = cart
+
+    # Якщо запит AJAX, повертаємо JSON
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({'message': 'Страва додана в кошик!', 'dish_id': dish.id})
+
+    # Якщо не AJAX-запит, редиректимо на меню
     return redirect('menu')
 
 
@@ -142,6 +152,14 @@ def view_cart(request):
     return render(request, 'cart.html', {'cart_items': cart_items,
                                          'total_price': total_price})
 
+def remove_from_cart(request, dish_id):
+    cart = request.session.get('cart', {})
+
+    if str(dish_id) in cart:
+        del cart[str(dish_id)]
+        request.session['cart'] = cart
+
+    return redirect('cart')
 
 def checkout(request):
     cart = request.session.get('cart', {})

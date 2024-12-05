@@ -1,13 +1,21 @@
-{% extends 'base.html' %}
+{% extends "layouts/base.html" %}
 
 {% block title %}Delete Dish{% endblock %}
 
 {% block content %}
-  <h2>Are you sure you want to delete this dish?</h2>
-  <p>{{ dish.name }}</p>
-  <form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Yes, Delete</button>
-    <a href="{% url 'dish_list' %}" class="btn btn-secondary">Cancel</a>
-  </form>
+  {% include 'includes/navigation-custom.html' %}
+
+  <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 500px;">
+      <div class="card-body text-center">
+        <h2 class="card-title mb-3">Ви впевнені, що хочете видалити цю страву?</h2>
+        <p class="card-text mb-4"><strong>{{ dish.name }}</strong></p>
+        <form method="post" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Так, видалити</button>
+          <a href="{% url 'dish_list' %}" class="btn btn-secondary">Відмінити</a>
+        </form>
+      </div>
+    </div>
+  </div>
 {% endblock %}

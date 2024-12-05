@@ -15,9 +15,7 @@ from .views import (
     view_cart,
     checkout,
     order_history,
-
-
-
+    remove_from_cart,
 )
 
 urlpatterns = [
@@ -37,6 +35,7 @@ urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
     path('menu/', menu_view, name='menu'),
     path('cart/', view_cart, name='cart'),
+    path('remove_from_cart/<int:dish_id>/', remove_from_cart, name='remove_from_cart'),
     path('cart/add/<int:dish_id>/', add_to_cart, name='add_to_cart'),
     path('checkout/', checkout, name='checkout'),
     path('orders/', order_history, name='order_history'),
