@@ -119,7 +119,6 @@ def add_to_cart(request, dish_id):
     dish = get_object_or_404(Dish, id=dish_id)
     cart = request.session.get('cart', {})
 
-    # Додаємо страву до кошика
     if str(dish.id) in cart:
         cart[str(dish.id)] += 1
     else:
@@ -127,13 +126,11 @@ def add_to_cart(request, dish_id):
 
     request.session['cart'] = cart
 
-    # Якщо запит AJAX, повертаємо JSON
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return JsonResponse(
             {'message': 'Страва додана в кошик!', 'dish_id': dish.id}
         )
 
-    # Якщо не AJAX-запит, редиректимо на меню
     return redirect('menu')
 
 

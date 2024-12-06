@@ -15,19 +15,16 @@
                     <form method="POST">
                         {% csrf_token %}
 
-                        <!-- Поле для назви типу страви -->
                         <div class="form-group mb-3">
                             <label for="id_name" class="form-label">Назва типу страви</label>
                             <input type="text" class="form-control" id="id_name" name="name" value="{{ form.name.value }}" required>
                         </div>
 
-                        <!-- Поле для опису типу страви -->
                         <div class="form-group mb-3">
                             <label for="id_description" class="form-label">Опис</label>
                             <textarea class="form-control" id="id_description" name="description" rows="3">{{ form.description.value }}</textarea>
                         </div>
 
-                        <!-- Кнопки -->
                         <div class="d-flex justify-content-between mt-3">
                             <button type="submit" class="btn btn-success w-50">Створити тип</button>
                             <a href="{% url 'dish_list' %}" class="btn btn-outline-secondary w-50 ms-2">Назад</a>

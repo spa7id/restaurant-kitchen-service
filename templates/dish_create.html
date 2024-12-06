@@ -16,25 +16,21 @@
                     <form method="post">
                         {% csrf_token %}
 
-                        <!-- Назва страви -->
                         <div class="form-group mb-3">
                             <label for="id_name" class="form-label">Назва</label>
                             <input type="text" class="form-control" name="name" id="id_name" value="{{ form.name.value }}">
                         </div>
 
-                        <!-- Опис страви -->
                         <div class="form-group mb-3">
                             <label for="id_description" class="form-label">Опис</label>
                             <textarea class="form-control" name="description" id="id_description" rows="3">{{ form.description.value }}</textarea>
                         </div>
 
-                        <!-- Ціна страви -->
                         <div class="form-group mb-3">
                             <label for="id_price" class="form-label">Ціна</label>
                             <input type="number" class="form-control" name="price" id="id_price" value="{{ form.price.value }}">
                         </div>
 
-                        <!-- Тип страви -->
                         <div class="form-group mb-3">
                             <label for="id_dish_type" class="form-label">Тип страви</label>
                             <select class="form-select" name="dish_type" id="id_dish_type">
@@ -46,7 +42,6 @@
                             </select>
                         </div>
 
-                        <!-- Кухарі -->
                         <div class="form-group mb-3">
                             <label for="id_cooks" class="form-label">Кухарі</label>
                             <select class="form-select" name="cooks" id="id_cooks" multiple>
