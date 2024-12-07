@@ -11,4 +11,4 @@ python manage.py collectstatic --no-input
 # Apply any outstanding database migrations
 python manage.py migrate
 
-gunicorn restaurant_kitchen_service.wsgi:application
+gunicorn restaurant_kitchen_service.wsgi:application  --workers 1 --threads 10
