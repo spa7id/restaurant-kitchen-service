@@ -84,7 +84,6 @@ def home(request):
         },
     )
 
-
 class DishTypeCreateView(CreateView):
     model = DishType
     form_class = DishTypeForm
@@ -109,7 +108,9 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        messages.success(self.request, "Account created successfully. Please log in.")
+        messages.success(
+            self.request, "Account created successfully. Please log in."
+        )
         return redirect(self.success_url)
 
     def form_invalid(self, form):
@@ -136,7 +137,9 @@ def add_to_cart(request, dish_id):
     request.session["cart"] = cart
 
     if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-        return JsonResponse({"message": "Страва додана в кошик!", "dish_id": dish.id})
+        return JsonResponse(
+            {"message": "Страва додана в кошик!", "dish_id": dish.id}
+        )
 
     return redirect("menu")
 
@@ -148,11 +151,16 @@ def view_cart(request):
     for dish_id, quantity in cart.items():
         dish = get_object_or_404(Dish, id=dish_id)
         cart_items.append(
-            {"dish": dish, "quantity": quantity, "total_price": dish.price * quantity}
+            {"dish": dish,
+             "quantity": quantity,
+             "total_price": dish.price * quantity}
         )
         total_price += dish.price * quantity
     return render(
-        request, "cart.html", {"cart_items": cart_items, "total_price": total_price}
+        request,
+        "cart.html",
+        {"cart_items": cart_items,
+         "total_price": total_price}
     )
 
 
@@ -179,7 +187,9 @@ def checkout(request):
             order.save()
             for dish_id, quantity in cart.items():
                 dish = get_object_or_404(Dish, id=dish_id)
-                OrderItem.objects.create(order=order, dish=dish, quantity=quantity)
+                OrderItem.objects.create(
+                    order=order, dish=dish, quantity=quantity
+                )
             request.session["cart"] = {}
             return redirect("order_history")
     else:

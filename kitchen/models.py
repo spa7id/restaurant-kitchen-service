@@ -58,10 +58,14 @@ class Order(models.Model):
         ("completed", "Completed"),
         ("canceled", "Canceled"),
     ]
-    user = models.ForeignKey(Cook, on_delete=models.CASCADE, related_name="orders")
+    user = models.ForeignKey(
+        Cook, on_delete=models.CASCADE, related_name="orders"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default="pending"
+    )
     address = models.TextField()
     comment = models.TextField(blank=True, null=True)
 
@@ -70,7 +74,9 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name="items"
+    )
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
 

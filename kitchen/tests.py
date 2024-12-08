@@ -1,14 +1,18 @@
 from django.test import Client, TestCase
 from django.urls import reverse
 
-from .forms import CookCreationForm, CookForm, DishForm, DishTypeForm, OrderForm
-from .models import Cook, Dish, DishType, Order
+from .forms import (CookCreationForm, CookForm, DishForm, DishTypeForm,
+                    OrderForm)
+from .models import (Cook, Dish, DishType,
+                     Order)
 
 
 class DishViewTests(TestCase):
 
     def setUp(self):
-        self.user = Cook.objects.create_user(username="testuser", password="testpass")
+        self.user = Cook.objects.create_user(
+            username="testuser", password="testpass"
+        )
         self.dish_type = DishType.objects.create(name="Main Course")
         self.dish = Dish.objects.create(
             name="Pasta", price=10.5, dish_type=self.dish_type
@@ -27,7 +31,9 @@ class DishViewTests(TestCase):
 
     def test_dish_delete_view(self):
         self.client.login(username="testuser", password="testpass")
-        response = self.client.post(reverse("dish_delete", args=[self.dish.id]))
+        response = self.client.post(
+            reverse("dish_delete", args=[self.dish.id])
+        )
         self.assertEqual(response.status_code, 302)
         self.assertFalse(Dish.objects.filter(id=self.dish.id).exists())
 
@@ -65,7 +71,9 @@ class MenuCartTests(TestCase):
 class CheckoutTests(TestCase):
 
     def setUp(self):
-        self.user = Cook.objects.create_user(username="testuser", password="testpass")
+        self.user = Cook.objects.create_user(
+            username="testuser", password="testpass"
+        )
         self.dish_type = DishType.objects.create(name="Main Course")
         self.dish = Dish.objects.create(
             name="Pasta", price=10.5, dish_type=self.dish_type
@@ -93,7 +101,9 @@ class CheckoutTests(TestCase):
 class OrderHistoryTests(TestCase):
 
     def setUp(self):
-        self.user = Cook.objects.create_user(username="testuser", password="testpass")
+        self.user = Cook.objects.create_user(
+            username="testuser", password="testpass"
+        )
         self.order = Order.objects.create(
             user=self.user,
             address="123 Street",

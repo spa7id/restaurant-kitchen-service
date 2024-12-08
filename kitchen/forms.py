@@ -13,7 +13,9 @@ class DishTypeForm(forms.ModelForm):
 
 class DishForm(forms.ModelForm):
     cooks = forms.ModelMultipleChoiceField(
-        queryset=Cook.objects.all(), widget=forms.CheckboxSelectMultiple, required=True
+        queryset=Cook.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True
     )
 
     class Meta:
@@ -78,7 +80,8 @@ class CookCreationForm(forms.ModelForm):
 
     class Meta:
         model = Cook
-        fields = ["first_name", "last_name", "email", "years_of_experience", "password"]
+        fields = ["first_name", "last_name", "email", "years_of_experience",
+                  "password"]
 
     def save(self, commit=True):
         user = super().save(commit=False)
