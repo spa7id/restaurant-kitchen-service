@@ -3,7 +3,7 @@
 {% block title %}Меню{% endblock %}
 
 {% block content %}
-  {% include 'includes/navigation-custom.html' %}
+  {% include "includes/navigation-custom.html" %}
 
   <div class="container my-5">
     <h2 class="text-center mb-4">Меню</h2>
@@ -32,10 +32,9 @@
 
     buttons.forEach(button => {
       button.addEventListener('click', function (event) {
-        event.preventDefault(); // Забороняємо перезавантаження сторінки
+        event.preventDefault();
         const button = event.target;
 
-        // Відправляємо AJAX-запит
         fetch(button.href, {
           method: 'GET',
           headers: {
@@ -48,16 +47,14 @@
             throw new Error('Помилка сервера');
           }
         }).then(data => {
-          console.log(data.message); // Виводимо повідомлення у консоль
+          console.log(data.message);
 
-          // Зміна кнопки: текст і колір
           button.textContent = 'Додано';
           button.classList.remove('btn-primary');
           button.classList.add('btn-success');
           button.disabled = true;
 
-          // Можна додати спливаюче повідомлення або інший зворотний зв'язок
-          alert(data.message); // Спливаюче повідомлення
+          alert(data.message);
         }).catch(error => {
           console.error('Помилка запиту:', error);
           alert('Не вдалося додати страву до кошика.');

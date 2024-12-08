@@ -1,12 +1,41 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 
 {% block title %}Оформлення замовлення{% endblock %}
 
 {% block content %}
-<h2>Оформлення замовлення</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Підтвердити замовлення</button>
-</form>
+{% include "includes/navigation-custom.html" %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h2 class="mb-0">Оформлення замовлення</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="d-flex justify-content-between mt-3">
+                            <button type="submit" class="btn btn-primary w-50">Підтвердити замовлення</button>
+                        </div>
+                    </form>
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger mt-3">
+                        <h6>Виправте наступні помилки:</h6>
+                        <ul class="mb-0">
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    <li><strong>{{ field|capfirst }}:</strong> {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
