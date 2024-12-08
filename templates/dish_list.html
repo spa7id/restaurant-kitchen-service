@@ -1,0 +1,30 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Список страв{% endblock %}
+
+{% block content %}
+  {% include "includes/navigation-custom.html" %}
+
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Список страв</h2>
+    <div class="row">
+      {% for dish in dishes %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ dish.name }}</h5>
+              <p class="card-text text-muted">Тип страви: {{ dish.dish_type.name }}</p>
+              <div class="d-flex flex-column gap-2">
+                <a href="{% url 'dish_detail' dish.pk %}" class="btn btn-info btn-block">Деталі</a>
+                <a href="{% url 'dish_update' dish.pk %}" class="btn btn-primary btn-block">Редагувати</a>
+                <a href="{% url 'dish_delete' dish.pk %}" class="btn btn-danger btn-block">Видалити</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-muted text-center">Немає страв у списку.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

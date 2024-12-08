@@ -1,2 +1,41 @@
+# Django specific
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# Python bytecode
+*.py[cod]
+
+# Virtual environment
+.env
 .venv
+env/
+venv/
+ENV/
+
+# Coverage reports
+.coverage
+htmlcov/
+.cache
+
+# Testing files
+.pytest_cache/
+.tox/
+
+# PyCharm specific
 .idea/
+*.iml
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini

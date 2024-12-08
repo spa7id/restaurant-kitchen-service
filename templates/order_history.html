@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Історія замовлень{% endblock %}
+
+{% block content %}
+  {% include "includes/navigation-custom.html" %}
+
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Історія замовлень</h2>
+    <div class="row">
+      {% for order in orders %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">Замовлення №{{ order.id }}</h5>
+              <p class="card-text">Дата: {{ order.created_at }}</p>
+              <p class="card-text">Статус: {{ order.get_status_display }}</p>
+              <p class="card-text">Адреса: {{ order.address }}</p>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-muted text-center">Ви ще не зробили жодного замовлення.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

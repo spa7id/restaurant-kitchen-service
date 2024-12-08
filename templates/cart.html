@@ -1,0 +1,40 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Кошик{% endblock %}
+
+{% block content %}
+  {% include "includes/navigation-custom.html" %}
+
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Ваш кошик</h2>
+    {% if cart_items %}
+      <div class="row">
+        {% for item in cart_items %}
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 class="card-title">{{ item.dish.name }}</h5>
+                <p class="card-text">Кількість: {{ item.quantity }}</p>
+                <p class="card-text">Ціна: {{ item.total_price }} грн</p>
+
+                <form action="{% url 'remove_from_cart' item.dish.id %}" method="post" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="text-center mt-4">
+        <p><strong>Загальна сума: {{ total_price }} грн</strong></p>
+        <a href="{% url 'checkout' %}" class="btn btn-success">Оформити замовлення</a>
+      </div>
+    {% else %}
+      <p class="text-muted text-center">Кошик порожній.</p>
+      <div class="text-center">
+        <a href="{% url 'menu' %}" class="btn btn-primary">Переглянути меню</a>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

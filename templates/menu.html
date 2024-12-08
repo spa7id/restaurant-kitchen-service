@@ -1,0 +1,65 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Меню{% endblock %}
+
+{% block content %}
+  {% include "includes/navigation-custom.html" %}
+
+  <div class="container my-5">
+    <h2 class="text-center mb-4">Меню</h2>
+    <div class="row">
+      {% for dish in dishes %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h3 class="card-title">{{ dish.name }}</h3>
+              <p class="card-text text-muted">{{ dish.description }}</p>
+              <p class="card-text"><strong>Ціна:</strong> {{ dish.price }} грн</p>
+              <a href="{% url 'add_to_cart' dish.id %}" class="btn btn-primary btn-block add-to-cart-btn">Додати в кошик</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+
+
+<!-- JavaScript -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.add-to-cart-btn');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        const button = event.target;
+
+        fetch(button.href, {
+          method: 'GET',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        }).then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Помилка сервера');
+          }
+        }).then(data => {
+          console.log(data.message);
+
+          button.textContent = 'Додано';
+          button.classList.remove('btn-primary');
+          button.classList.add('btn-success');
+          button.disabled = true;
+
+          alert(data.message);
+        }).catch(error => {
+          console.error('Помилка запиту:', error);
+          alert('Не вдалося додати страву до кошика.');
+        });
+      });
+    });
+  });
+</script>
