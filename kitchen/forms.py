@@ -13,9 +13,7 @@ class DishTypeForm(forms.ModelForm):
 
 class DishForm(forms.ModelForm):
     cooks = forms.ModelMultipleChoiceField(
-        queryset=Cook.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=True
+        queryset=Cook.objects.all(), widget=forms.CheckboxSelectMultiple, required=True
     )
 
     class Meta:
@@ -39,8 +37,14 @@ class CookForm(forms.ModelForm):
 
     class Meta:
         model = Cook
-        fields = ["username", "first_name", "last_name", "email",
-                  "years_of_experience", "password"]
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "years_of_experience",
+            "password",
+        ]
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
@@ -69,13 +73,12 @@ class CookCreationForm(forms.ModelForm):
         widget=forms.PasswordInput,
         label="Пароль",
         required=True,
-        help_text="Пароль має бути не менше 8 символів"
+        help_text="Пароль має бути не менше 8 символів",
     )
 
     class Meta:
         model = Cook
-        fields = ["first_name", "last_name", "email", "years_of_experience",
-                  "password"]
+        fields = ["first_name", "last_name", "email", "years_of_experience", "password"]
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -88,8 +91,8 @@ class CookCreationForm(forms.ModelForm):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['address', 'comment']
+        fields = ["address", "comment"]
         widgets = {
-            'address': forms.Textarea(attrs={'rows': 3}),
-            'comment': forms.Textarea(attrs={'rows': 2}),
+            "address": forms.Textarea(attrs={"rows": 3}),
+            "comment": forms.Textarea(attrs={"rows": 2}),
         }

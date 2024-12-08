@@ -38,9 +38,9 @@ class Dish(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     dish_type = models.ForeignKey(
-        DishType, related_name='dishes', on_delete=models.CASCADE
+        DishType, related_name="dishes", on_delete=models.CASCADE
     )
-    cooks = models.ManyToManyField(Cook, related_name='dishes')
+    cooks = models.ManyToManyField(Cook, related_name="dishes")
 
     class Meta:
         permissions = [
@@ -53,19 +53,15 @@ class Dish(models.Model):
 
 class Order(models.Model):
     STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('confirmed', 'Confirmed'),
-        ('completed', 'Completed'),
-        ('canceled', 'Canceled'),
+        ("pending", "Pending"),
+        ("confirmed", "Confirmed"),
+        ("completed", "Completed"),
+        ("canceled", "Canceled"),
     ]
-    user = models.ForeignKey(
-        Cook, on_delete=models.CASCADE, related_name='orders'
-    )
+    user = models.ForeignKey(Cook, on_delete=models.CASCADE, related_name="orders")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(
-        max_length=20, choices=STATUS_CHOICES, default='pending'
-    )
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
     address = models.TextField()
     comment = models.TextField(blank=True, null=True)
 
@@ -74,9 +70,7 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name='items'
-    )
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
 
